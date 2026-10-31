@@ -370,6 +370,34 @@ body.no-scroll { overflow: hidden; }
 .toast.is-show { transform: translate(-50%, 0); }
 .flyer { position: fixed; z-index: 130; pointer-events: none; width: 120px; transition: transform .8s cubic-bezier(.5,-0.3,.7,1), opacity .8s; }
 
+/* ---------- Productos con foto real ---------- */
+/* Tarjetas de pasarela y carrusel: la foto ocupa toda la tarjeta */
+.rcard.has-photo .rcard__shoe { inset: 0; transform: none; display: block; }
+.rcard.has-photo .rcard__shoe img { width: 100%; height: 100%; object-fit: cover; filter: none; transition: transform .7s var(--ease); }
+.rcard.has-photo:hover .rcard__shoe { transform: none; }
+.rcard.has-photo:hover .rcard__shoe img { transform: scale(1.08); }
+.rcard.has-photo::after { content: ""; position: absolute; inset: 45% 0 0; background: linear-gradient(to top, rgba(0,0,0,.85), transparent); pointer-events: none; }
+.rcard.has-photo .rcard__info { z-index: 1; }
+.rcard.has-photo .rcard__tag { position: relative; z-index: 1; }
+.rcard__brand { font-size: .62rem; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; color: var(--lime); margin-bottom: 2px; }
+.rcard.has-photo .rcard__add { background: var(--lime); color: var(--ink); }
+
+/* Catálogo */
+.card__media.has-photo::before { display: none; }
+.card__media.has-photo .card__shoe { width: 100%; height: 100%; transform: none; }
+.card__media.has-photo .card__shoe img { width: 100%; height: 100%; object-fit: cover; filter: none; }
+.card:hover .card__media.has-photo .card__shoe { transform: scale(1.07); }
+
+/* Drop: foto circular dentro del anillo de texto */
+.drop__shoe.has-photo { width: 72%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 6px solid var(--ink); box-shadow: 0 30px 60px rgba(0,0,0,.35); animation: floatPhoto 4s ease-in-out infinite; }
+.drop__shoe.has-photo img { width: 100%; height: 100%; object-fit: cover; filter: none; transform: scale(1.15); }
+@keyframes floatPhoto { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-16px) rotate(2deg); } }
+
+/* Carrito y animación al carrito */
+.citem__img.has-photo img { width: 100%; height: 100%; object-fit: cover; transform: none; }
+.flyer.has-photo { width: 90px; height: 90px; border-radius: 50%; overflow: hidden; border: 3px solid var(--lime); }
+.flyer.has-photo img { width: 100%; height: 100%; object-fit: cover; }
+
 /* ---------- Revelado al hacer scroll ---------- */
 .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
 .reveal.is-in { opacity: 1; transform: none; }

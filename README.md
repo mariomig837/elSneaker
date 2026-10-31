@@ -14,9 +14,12 @@ Abre http://localhost:5288
 - `js/products.js`: **catálogo**. Aquí se añaden o editan productos, precios, etiquetas y el lanzamiento (DROP).
 - `js/app.js`: lógica (pasarelas, filtros, carrito, cuenta atrás, animaciones). Envío gratis y moneda arriba del archivo.
 
-## Fotos reales
-Guarda las fotos en `assets/productos/` (mejor PNG/WebP con fondo transparente) y añade `img` al producto:
+## Fotos de producto
+Las fotos actuales son de [Unsplash](https://unsplash.com) (licencia gratuita, uso comercial permitido) y se cargan desde su servidor.
+Para usar fotos propias, guárdalas en `assets/productos/` y cambia el campo `img` del producto en `js/products.js`:
 ```js
-{ id: "volt-runner", name: "Volt Runner", ..., img: "assets/productos/volt-runner.webp" }
+img: "assets/productos/air-force-1.webp",
 ```
-Si no hay `img`, se dibuja una ilustración con los colores del producto.
+Si un producto no tiene `img`, se dibuja una ilustración con sus colores (`c`).
+
+> Las marcas (Nike, Jordan, Vans, Converse, Puma) son de sus propietarios. Para vender de verdad hay que ser distribuidor autorizado o vender producto original con factura.

@@ -38,7 +38,7 @@
       <path d="M60 110 Q140 96 230 132" stroke="#fff" stroke-opacity=".28" stroke-width="5" fill="none" stroke-linecap="round"/>
     </svg>`;
   }
-  const shoeMarkup = (p) => (p.img ? `<img src="${p.img}" alt="${p.name}" loading="lazy" />` : sneakerSVG(p.c));
+  const shoeMarkup = (p) => (p.img ? `<img src="${p.img}" alt="${p.brand ? p.brand + " " : ""}${p.name}" loading="lazy" decoding="async" />` : sneakerSVG(p.c));
   const isDark = (hex) => {
     const n = parseInt(hex.slice(1), 16);
     return ((n >> 16) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000 < 110;
@@ -47,11 +47,11 @@
   /* ---------- Tarjeta compacta (pasarelas y carrusel) ---------- */
   function railCard(p) {
     const fg = isDark(p.c.bg) ? "#f5f3ec" : "#0b0b0b";
-    return `<article class="rcard" style="--bg:${p.c.bg};--fg:${fg}">
+    return `<article class="rcard${p.img ? " has-photo" : ""}" style="--bg:${p.c.bg};--fg:${p.img ? "#f5f3ec" : fg}">
       ${p.tag ? `<span class="rcard__tag">${p.tag}</span>` : "<span></span>"}
       <div class="rcard__shoe">${shoeMarkup(p)}</div>
       <div class="rcard__info">
-        <div><div class="rcard__name">${p.name}</div><div class="rcard__price">${money(p.price)}</div></div>
+        <div>${p.brand ? `<div class="rcard__brand">${p.brand}</div>` : ""}<div class="rcard__name">${p.name}</div><div class="rcard__price">${money(p.price)}</div></div>
         <button class="rcard__add" data-add="${p.id}" aria-label="Añadir ${p.name} al carrito">+</button>
       </div>
     </article>`;
@@ -75,13 +75,13 @@
   const grid = $("#grid");
   grid.innerHTML = PRODUCTS.map((p) => `
     <article class="card" data-cat="${p.cat}" data-id="${p.id}">
-      <div class="card__media" style="--bg:${p.c.bg}" data-word="${p.line}">
+      <div class="card__media${p.img ? " has-photo" : ""}" style="--bg:${p.c.bg}" data-word="${p.line}">
         ${p.tag ? `<span class="card__tag" ${p.oldPrice ? "data-sale" : ""}>${p.tag}</span>` : ""}
         <div class="card__shoe">${shoeMarkup(p)}</div>
       </div>
       <div class="card__body">
         <div class="card__top">
-          <div><div class="card__line">${p.line}</div><h3 class="card__name">${p.name}</h3></div>
+          <div><div class="card__line">${p.brand ? p.brand + " · " : ""}${p.line}</div><h3 class="card__name">${p.name}</h3></div>
           <div class="card__price">${p.oldPrice ? `<s>${money(p.oldPrice)}</s>` : ""}${money(p.price)}</div>
         </div>
         <div class="sizes" role="radiogroup" aria-label="Talla">
@@ -127,7 +127,8 @@
   }
 
   /* ---------- Drop ---------- */
-  $("#dropShoe").innerHTML = sneakerSVG(DROP.c);
+  $("#dropShoe").innerHTML = shoeMarkup(DROP);
+  if (DROP.img) $("#dropShoe").classList.add("has-photo");
   $("#dropName").textContent = DROP.name;
   $("#dropLine").textContent = DROP.line;
   $("#dropPrice").textContent = money(DROP.price);
@@ -179,7 +180,7 @@
     $("#cartItems").innerHTML = cart.map((i, idx) => {
       const p = byId(i.id);
       return `<li class="citem" data-idx="${idx}">
-        <div class="citem__img" style="--bg:${p.c.bg}">${shoeMarkup(p)}</div>
+        <div class="citem__img${p.img ? " has-photo" : ""}" style="--bg:${p.c.bg}">${shoeMarkup(p)}</div>
         <div>
           <p class="citem__name">${p.name}</p>
           <div class="citem__meta">Talla
@@ -252,7 +253,7 @@
     if (!from || matchMedia("(prefers-reduced-motion: reduce)").matches) return bump();
     const r = from.getBoundingClientRect();
     const fly = document.createElement("div");
-    fly.className = "flyer"; fly.innerHTML = shoeMarkup(p);
+    fly.className = p.img ? "flyer has-photo" : "flyer"; fly.innerHTML = shoeMarkup(p);
     fly.style.left = `${r.left + r.width / 2 - 60}px`; fly.style.top = `${r.top + r.height / 2 - 35}px`;
     document.body.appendChild(fly);
     requestAnimationFrame(() => requestAnimationFrame(() => {
